@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Latest News - WebNewsPlus covers breaking news, technology updates, business insights, and trending stories">
+    <meta name="keywords" content="latest news, breaking news, technology news, business news, world news, trending stories">
+    <title>Latest News - WebNewsPlus</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+        
+        /* Header */
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover, nav a.active {
+            color: #667eea;
+        }
+        
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 20px;
+            text-align: center;
+        }
+        
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* Filter Tabs */
+        .filter-tabs {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .filter-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+        }
+        
+        .filter-btn {
+            padding: 0.6rem 1.5rem;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 20px;
+        }
+        
+        /* News Grid */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .news-article {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .news-article:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        
+        .news-image {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3.5rem;
+            position: relative;
+        }
+        
+        .news-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(255,255,255,0.95);
+            color: #667eea;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        
+        .news-content {
+            padding: 1.5rem;
+        }
+        
+        .news-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: #999;
+        }
+        
+        .news-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: #333;
+            line-height: 1.4;
+        }
+        
+        .news-excerpt {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .news-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .read-more {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .read-more:hover {
+            gap: 0.6rem;
+        }
+        
+        .news-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: #999;
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 3rem 0;
+        }
+        
+        .page-btn {
+            padding: 0.6rem 1.2rem;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .page-btn:hover, .page-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 2rem 20px;
+            margin-top: 4rem;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            nav {
+                display: none;
+            }
+            
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .filter-content {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">📰 WebNewsPlus</a>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="news.html" class="active">News</a>
+                <a href="#technology">Technology</a>
+                <a href="#business">Business</a>
+                <a href="#about">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>📰 Latest News</h1>
+        <p>Stay updated with breaking news and trending stories from around the world</p>
+    </section>
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+        <div class="filter-content">
+            <button class="filter-btn active">All News</button>
+            <button class="filter-btn">Technology</button>
+            <button class="filter-btn">Business</button>
+            <button class="filter-btn">AI & ML</button>
+            <button class="filter-btn">World</button>
+            <button class="filter-btn">Health</button>
+            <button class="filter-btn">Science</button>
+            <button class="filter-btn">Entertainment</button>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="news-grid">
+            <!-- Article 1 -->
+            <article class="news-article">
+                <div class="news-image">
+                    🤖
+                    <span class="news-badge">AI & Technology</span>
+                </div>
+                <div class="news-content">
+                    <div class="news-meta">
+                        <span>📅 Dec 24, 2025</span>
+                        <span>⏱️ 5 min read</span>
+                    </div>
+                    <h2 class="news-title">ChatGPT-5 Launches with Revolutionary Features</h2>
+                    <p class="news-excerpt">OpenAI announces the release of ChatGPT-5, featuring advanced reasoning capabilities, multimodal understanding, and unprecedented accuracy in complex tasks.</p>
+                    <div class="news-footer">
+                        <a href="#" class="read-more">Read Full Story →</a>
+                        <div class="news-stats">
+                            <span>👁️ 15.2K</span>
+                            <span>💬 234</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 2 -->
+            <article class="news-article">
+                <div class="news-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    💰
+                    <span class="news-badge">Business</span>
+                </div>
+                <div class="news-content">
+                    <div class="news-meta">
+                        <span>📅 Dec 24, 2025</span>
+                        <span>⏱️ 4 min read</span>
+                    </div>
+                    <h2 class="news-title">Tech Giants Invest $10B in Green Energy Initiative</h2>
+                    <p class="news-excerpt">Major technology companies announce massive investment in renewable energy projects, aiming to achieve carbon neutrality by 2030.</p>
+                    <div class="news-footer">
+                        <a href="#" class="read-more">Read Full Story →</a>
+                        <div class="news-stats">
+                            <span>👁️ 12.8K</span>
+                            <span>💬 189</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 3 -->
+            <article class="news-article">
+                <div class="news-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    🚀
+                    <span class="news-badge">Technology</span>
+                </div>
+                <div class="news-content">
+                    <div class="news-meta">
+                        <span>📅 Dec 24, 2025</span>
+                        <span>⏱️ 6 min read</span>
+                    </div>
+                    <h2 class="news-title">India Launches Revolutionary Digital Payment System</h2>
+                    <p class="news-excerpt">Government unveils next-generation payment infrastructure promising instant, secure transactions with zero fees for millions of users.</p>
+                    <div class="news-footer">
+                        <a href="#" class="read-more">Read Full Story →</a>
+                        <div class="news-stats">
+                            <span>👁️ 18.5K</span>
+                            <span>💬 312</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 4 -->
+            <article class="news-article">
+                <div class="news-image" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                    📈
+                    <span class="news-badge">Markets</span>
+                </div>
+                <div class="news-content">
+                    <div class="news-meta">
+                        <span>📅 Dec 24, 2025</span>
+                        <span>⏱️ 3 min read</span>
+                    </div>
+                    <h2 class="news-title">Global Stock Markets Hit Record Highs</h2>
+                    <p class="news-excerpt">Major indices worldwide celebrate unprecedented growth as technology sector leads market rally with strong earnings reports.</p>
+                    <div class="news-footer">
+                        <a href="#" class="read-more">Read Full Story →</a>
+                        <div class="news-stats">
+                            <span>👁️ 9.7K</span>
+                            <span>💬 156</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 5 -->
+            <article class="news-article">
+                <div class="news-image" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
+                    🎓
+                    <span class="news-badge">Education</span>
+                </div>
+                <div class="news-content">
+                    <div class="news-meta">
+                        <span>📅 Dec 23, 2025</span>
+                        <span>⏱️ 5 min read</span>
+                    </div>
+                    <h2 class="news-title">AI-Powered Learning Platforms Transform Education</h2>
+                    <p class="news-excerpt">Revolutionary artificial intelligence tools reshape how students learn, offering personalized education experiences adapted to individual needs.</p>
+                    <div class="news-footer">
+                        <a href="#" class="read-more">Read Full Story →</a>
+                        <div class="news-stats">
+                            <span>👁️ 11.3K</span>
+                            <span>💬 201</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 6 -->
+            <article class="news-article">
+                <div class="news-image" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                    🏥
+                    <span class="news-badge">Health</span>
+                </div>
+                <div class="news-content">
+                    <div class="news-meta">
+                        <span>📅 Dec 23, 2025</span>
+                        <span>⏱️ 7 min read</span>
+                    </div>
+                    <h2 class="news-title">Breakthrough in Cancer Treatment Shows Promise</h2>
+                    <p class="news-excerpt">Medical researchers announce significant progress in developing new cancer treatment methods with higher success rates and fewer side effects.</p>
+                    <div class="news-footer">
+                        <a href="#" class="read-more">Read Full Story →</a>
+                        <div class="news-stats">
+                            <span>👁️ 14.6K</span>
+                            <span>💬 278</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 7 -->
+            <article class="news-article">
+                <div class="news-image" style="background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%);">
+                    ⚡
+                    <span class="news-badge">Energy</span>
+                </div>
+                <div class="news-content">
+                    <div class="news-meta">
+                        <span>📅 Dec 23, 2025</span>
+                        <span>⏱️ 4 min read</span>
+                    </div>
+                    <h2 class="news-title">Solar Power Costs Drop to Record Lows</h2>
+                    <p class="news-excerpt">Renewable energy becomes more accessible as solar panel manufacturing costs reach historic lows, accelerating global clean energy transition.</p>
+                    <div class="news-footer">
+                        <a href="#" class="read-more">Read Full Story →</a>
+                        <div class="news-stats">
+                            <span>👁️ 8.9K</span>
+                            <span>💬 142</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 8 -->
+            <article class="news-article">
+                <div class="news-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    🌍
+                    <span class="news-badge">World News</span>
+                </div>
+                <div class="news-content">
+                    <div class="news-meta">
+                        <span>📅 Dec 23, 2025</span>
+                        <span>⏱️ 6 min read</span>
+                    </div>
+                    <h2 class="news-title">Global Climate Summit Reaches Historic Agreement</h2>
+                    <p class="news-excerpt">World leaders unite to sign comprehensive climate action plan with binding commitments to reduce carbon emissions by 50% by 2035.</p>
+                    <div class="news-footer">
+                        <a href="#" class="read-more">Read Full Story →</a>
+                        <div class="news-stats">
+                            <span>👁️ 16.2K</span>
+                            <span>💬 345</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 9 -->
+            <article class="news-article">
+                <div class="news-image" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+                    🎮
+                    <span class="news-badge">Gaming</span>
+                </div>
+                <div class="news-content">
+                    <div class="news-meta">
+                        <span>📅 Dec 22, 2025</span>
+                        <span>⏱️ 5 min read</span>
+                    </div>
+                    <h2 class="news-title">Next-Gen Gaming Consoles Break Sales Records</h2>
+                    <p class="news-excerpt">Latest gaming technology captures consumer imagination with immersive experiences, ray tracing, and cutting-edge graphics capabilities.</p>
+                    <div class="news-footer">
+                        <a href="#" class="read-more">Read Full Story →</a>
+                        <div class="news-stats">
+                            <span>👁️ 13.4K</span>
+                            <span>💬 267</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 10 -->
+            <article class="news-article">
+                <div class="news-image" style="background: linear-gradient(135deg, #ff6e7f 0%, #bfe9ff 100%);">
+                    🔬
+                    <span class="news-badge">Science</span>
+                </div>
+                <div class="news-content">
+                    <div class="news-meta">
+                        <span>📅 Dec 22, 2025</span>
+                        <span>⏱️ 8 min read</span>
+                    </div>
+                    <h2 class="news-title">Scientists Discover New Form of Matter</h2>
+                    <p class="news-excerpt">Groundbreaking research reveals previously unknown state of matter with potential applications in quantum computing and energy storage.</p>
+                    <div class="news-footer">
+                        <a href="#" class="read-more">Read Full Story →</a>
+                        <div class="news-stats">
+                            <span>👁️ 10.8K</span>
+                            <span>💬 198</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 11 -->
+            <article class="news-article">
+                <div class="news-image" style="background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);">
+                    💼
+                    <span class="news-badge">Business</span>
+                </div>
+                <div class="news-content">
+                    <div class="news-meta">
+                        <span>📅 Dec 22, 2025</span>
+                        <span>⏱️ 4 min read</span>
+                    </div>
+                    <h2 class="news-title">Remote Work Revolution Continues to Grow</h2>
+                    <p class="news-excerpt">Companies worldwide embrace hybrid work models as productivity studies show remote workers are 20% more efficient than office-based employees.</p>
+                    <div class="news-footer">
+                        <a href="#" class="read-more">Read Full Story →</a>
+                        <div class="news-stats">
+                            <span>👁️ 12.1K</span>
+                            <span>💬 223</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 12 -->
+            <article class="news-article">
+                <div class="news-image" style="background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);">
+                    🚗
+                    <span class="news-badge">Automotive</span>
+                </div>
+                <div class="news-content">
+                    <div class="news-meta">
+                        <span>📅 Dec 21, 2025</span>
+                        <span>⏱️ 5 min read</span>
+                    </div>
+                    <h2 class="news-title">Electric Vehicles Outsell Gas Cars for First Time</h2>
+                    <p class="news-excerpt">Historic milestone as electric vehicle sales surpass traditional combustion engines in major markets, signaling automotive industry transformation.</p>
+                    <div class="news-footer">
+                        <a href="#" class="read-more">Read Full Story →</a>
+                        <div class="news-stats">
+                            <span>👁️ 15.7K</span>
+                            <span>💬 289</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="page-btn">← Previous</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">4</button>
+            <button class="page-btn">5</button>
+            <button class="page-btn">Next →</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="news.html">News</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+                <a href="#privacy">Privacy</a>
+            </div>
+            <p>&copy; 2025 WebNewsPlus. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Filter functionality
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Pagination functionality
+        const pageBtns = document.querySelectorAll('.page-btn');
+        pageBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (!this.textContent.includes('Previous') && !this.textContent.includes('Next')) {
+                    pageBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
